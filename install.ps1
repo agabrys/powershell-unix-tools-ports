@@ -10,27 +10,37 @@ You may obtain:
  - a copy of the License at project page
  - a template of the License at https://opensource.org/licenses/BSD-2-Clause
 #>
-$_psUnixToolsPortsDirectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$_psUnixToolsPortsImportScript = "$_psUnixToolsPortsDirectory\import.psm1"
-$_psUnixToolsPortsImportCommand = "Import-Module -Name $_psUnixToolsPortsImportScript"
-$_psUnixToolsPortsImportCommandWithComments = "#PowerShell Unix Tools Ports: Start`r`nImport-Module -Name $_psUnixToolsPortsImportScript`r`n#PowerShell Unix Tools Ports: End`r`n"
+$private:directory = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$private:importScript = "$directory\import.psm1"
+$private:importCommand = @"
+#PowerShell Unix Tools Ports: Start
+`$private:powershellUnixToolsPortsImportScript = @'
+$importScript
+'@
+if (Test-Path -Path `$powershellUnixToolsPortsImportScript) {
+    Import-Module -Name `$powershellUnixToolsPortsImportScript
+} else {
+    Write-Warning -Message "PowerShell Unix Tools Ports import script does not exist: `$powershellUnixToolsPortsImportScript"
+}
+#PowerShell Unix Tools Ports: End
+"@
 
 If (!(Test-Path -Path $profile))
 {
-    Write-Host "User profile does not exist, creating a new one..."
-    $_psUnixToolsPortsUserProfileFile = (New-Item -Path $profile -ItemType "file" -Force -Value $_psUnixToolsPortsImportCommandWithComments).FullName
-    Write-Host "User profile has been created: $_psUnixToolsPortsUserProfileFile"
-    Write-Host -ForegroundColor Green "PowerShell Unix Tools Ports have been installed"
-    Import-Module -Name $_psUnixToolsPortsImportScript
+    Write-Host -Object "User profile does not exist, creating a new one..."
+    $private:userProfileFile = (New-Item -Path $profile -ItemType "file" -Force -Value $importCommand).FullName
+    Write-Host -Object "User profile has been created: $userProfileFile"
+    Write-Host -ForegroundColor Green -Object "PowerShell Unix Tools Ports have been installed"
+    Import-Module -Name $importScript
 }
-ElseIf (@(Get-Content -Path $profile | Where-Object { $_.Contains("$_psUnixToolsPortsImportScript") }).Count -gt 0)
+ElseIf (@(Get-Content -Path $profile | Where-Object { $_.Contains("$importScript") }).Count -gt 0)
 {
-    Write-Host -ForegroundColor Green "PowerShell Unix Tools Ports is already installed"
+    Write-Host -ForegroundColor Green -Object "PowerShell Unix Tools Ports is already installed"
 }
 Else
 {
-    Write-Host "User profile does exist, adding import to PowerShell Unix Tools Ports..."
-    Add-Content -Path $profile -Value "`r`n$_psUnixToolsPortsImportCommandWithComments"
-    Write-Host -ForegroundColor Green "PowerShell Unix Tools Ports have been installed"
-    Import-Module -Name $_psUnixToolsPortsImportScript
+    Write-Host -Object "User profile does exist, adding import to PowerShell Unix Tools Ports..."
+    Add-Content -Path $profile -Value "`r`n$importCommand"
+    Write-Host -ForegroundColor Green -Object "PowerShell Unix Tools Ports have been installed"
+    Import-Module -Name $importScript
 }

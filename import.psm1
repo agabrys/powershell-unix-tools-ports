@@ -10,9 +10,9 @@ You may obtain:
  - a copy of the License at project page
  - a template of the License at https://opensource.org/licenses/BSD-2-Clause
 #>
-$_psUnixToolsPortsDirectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$_psUnixToolsPortsToolsPaths = (Get-ChildItem "$_psUnixToolsPortsDirectory\tools" -File).FullName
-ForEach ($_psUnixToolsPortsToolPath in $_psUnixToolsPortsToolsPaths)
+$drectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$tools = (Get-ChildItem -Path "$drectory\tools" -File).FullName
+ForEach ($tool in $tools)
 {
-    Import-Module -Name $_psUnixToolsPortsToolPath
+    Import-Module -Name $tool
 }
