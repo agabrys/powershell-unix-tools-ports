@@ -124,7 +124,7 @@ unzip archive.zip
 .EXAMPLE
 unzip *.zip
 .EXAMPLE
-unzip -zipfile archive.zip -directory destination
+unzip archive.zip destination
 
 .NOTES
 Author: Adam Gabrys
@@ -138,7 +138,7 @@ Changelog:
 Param(
     [Parameter(ParameterSetName="zip",Mandatory=$true,Position=0)]
         [String]$zipfile,
-    [Parameter(ParameterSetName="zip",Mandatory=$false)]
+    [Parameter(ParameterSetName="zip",Mandatory=$false,Position=1)]
         [String]$diectory,
     [Parameter(ParameterSetName="help",Mandatory=$true)]
         [Switch]$help,
