@@ -21,3 +21,5 @@ Table with list of ported tools:
 | `sha256sum` | Computes SHA256 message digest |
 | `sha384sum` | Computes SHA384 message digest |
 | `sha512sum` | Computes SHA512 message digest |
+| `unzip` | Extracts files from ZIP archives |
+| `zip` | Packs and compresses files |
