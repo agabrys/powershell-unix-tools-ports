@@ -33,7 +33,7 @@ If (!(Test-Path -Path $profile))
     Write-Host -ForegroundColor Green -Object "PowerShell Unix Tools Ports have been installed"
     Import-Module -Name $importScript
 }
-ElseIf (@(Get-Content -Path $profile | Where-Object { $_.Contains("$importScript") }).Count -gt 0)
+ElseIf (@(Get-Content -Path $profile | Where-Object -FilterScript { $_.Contains("$importScript") }).Count -gt 0)
 {
     Write-Host -ForegroundColor Green -Object "PowerShell Unix Tools Ports is already installed"
 }

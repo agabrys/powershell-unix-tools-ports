@@ -22,7 +22,7 @@ Computes and prints MD5 (128-bit) message digest.
 .PARAMETER path
 Path for which MD5 sum will be computed.
 .PARAMETER help
-Display detailed help and exit.
+Displays detailed help and exit.
 .PARAMETER version
 Output version information and exit.
 
@@ -42,9 +42,11 @@ a56871b7cc07d76f749c944eef039d87  file3.txt
 
 .NOTES
 Author: Adam Gabrys
-Version: 1.0.0
+Version: 1.0.1
 
 Changelog:
+1.0.1:
+  * Stopped using default parameters in internal commands (always specify them by name)
 1.0.0:
   * Allowed calculation of MD5 sum
   * Added switches -help and -version
@@ -60,12 +62,12 @@ Param(
 
     If ($help)
     {
-        Get-Help md5sum -Detailed
+        Get-Help -Name md5sum -Detailed
         return
     }
     If ($version)
     {
-        Write-Host 1.0.0
+        Write-Host -Object 1.0.1
         return
     }
 
@@ -85,7 +87,7 @@ Computes and prints SHA1 (160-bit) message digest.
 .PARAMETER path
 Path for which SHA1 sum will be computed.
 .PARAMETER help
-Display detailed help and exit.
+Displays detailed help and exit.
 .PARAMETER version
 Output version information and exit.
 
@@ -104,9 +106,11 @@ c8892c8f2b76513ca607b66a4c3d10bb21d434ff  file3.txt
 
 .NOTES
 Author: Adam Gabrys
-Version: 1.0.0
+Version: 1.0.1
 
 Changelog:
+1.0.1:
+  * Stopped using default parameters in internal commands (always specify them by name)
 1.0.0:
   * Allowed calculation of SHA1 sum
   * Added switches -help and -version
@@ -122,12 +126,12 @@ Param(
 
     If ($help)
     {
-        Get-Help sha1sum -Detailed
+        Get-Help -Name sha1sum -Detailed
         return
     }
     If ($version)
     {
-        Write-Host 1.0.0
+        Write-Host -Object 1.0.1
         return
     }
 
@@ -147,7 +151,7 @@ Computes and prints SHA256 (256-bit) message digest.
 .PARAMETER path
 Path for which SHA256 sum will be computed.
 .PARAMETER help
-Display detailed help and exit.
+Displays detailed help and exit.
 .PARAMETER version
 Output version information and exit.
 
@@ -166,9 +170,11 @@ cb3133e67ec3c6d852cdad14c090fc067e5d690041cdc3ff047f44305d1c1343  file3.txt
 
 .NOTES
 Author: Adam Gabrys
-Version: 1.0.0
+Version: 1.0.1
 
 Changelog:
+1.0.1:
+  * Stopped using default parameters in internal commands (always specify them by name)
 1.0.0:
   * Allowed calculation of SHA256 sum
   * Added switches -help and -version
@@ -184,12 +190,12 @@ Param(
 
     If ($help)
     {
-        Get-Help sha256sum -Detailed
+        Get-Help -Name sha256sum -Detailed
         return
     }
     If ($version)
     {
-        Write-Host 1.0.0
+        Write-Host -Object 1.0.1
         return
     }
 
@@ -209,7 +215,7 @@ Computes and prints SHA384 (384-bit) message digest.
 .PARAMETER path
 Path for which SHA384 sum will be computed.
 .PARAMETER help
-Display detailed help and exit.
+Displays detailed help and exit.
 .PARAMETER version
 Output version information and exit.
 
@@ -228,9 +234,11 @@ b0dabec1d8bb6f95a9cd0f4425a49b18ddec1e2d1e60b4a577426c3dcbe41c451c472f32516f5a97
 
 .NOTES
 Author: Adam Gabrys
-Version: 1.0.0
+Version: 1.0.1
 
 Changelog:
+1.0.1:
+  * Stopped using default parameters in internal commands (always specify them by name)
 1.0.0:
   * Allowed calculation of SHA384 sum
   * Added switches -help and -version
@@ -246,12 +254,12 @@ Param(
 
     If ($help)
     {
-        Get-Help sha384sum -Detailed
+        Get-Help -Name sha384sum -Detailed
         return
     }
     If ($version)
     {
-        Write-Host 1.0.0
+        Write-Host -Object 1.0.1
         return
     }
 
@@ -271,7 +279,7 @@ Computes and prints SHA512 (512-bit) message digest.
 .PARAMETER path
 Path for which SHA512 sum will be computed.
 .PARAMETER help
-Display detailed help and exit.
+Displays detailed help and exit.
 .PARAMETER version
 Output version information and exit.
 
@@ -290,9 +298,11 @@ sha512sum file?.txt
 
 .NOTES
 Author: Adam Gabrys
-Version: 1.0.0
+Version: 1.0.1
 
 Changelog:
+1.0.1:
+  * Stopped using default parameters in internal commands (always specify them by name)
 1.0.0:
   * Allowed calculation of SHA512 sum
   * Added switches -help and -version
@@ -308,12 +318,12 @@ Param(
 
     If ($help)
     {
-        Get-Help sha512sum -Detailed
+        Get-Help -Name sha512sum -Detailed
         return
     }
     If ($version)
     {
-        Write-Host 1.0.0
+        Write-Host -Object 1.0.1
         return
     }
 
@@ -326,22 +336,20 @@ Param(
     [String]$path,
     [String]$algorithm
 )
-    If (!(Test-Path $path))
+    If (!(Test-Path -Path $path))
     {
-        Throw "No such file or directory: " + $path
+        Throw 'No such file: ' + $path
     }
-
-    $items = Get-Item $path
-
-    $sums = New-Object System.Collections.Generic.LinkedList[System.String]
+    $items = Get-Item -Path $path
+    $sums = New-Object -TypeName System.Collections.Generic.LinkedList[System.String]
     ForEach ($item in $items)
     {
-        If ((Get-Item $item) -is [System.IO.FileInfo])
+        If ((Get-Item -Path $item) -is [System.IO.FileInfo])
         {
-            $result = Get-FileHash $item -Algorithm $algorithm
+            $result = Get-FileHash -Path $item -Algorithm $algorithm
             $hash = $result.Hash.ToLower()
-            $filename = Split-Path $result.Path -Leaf
-            $sums.Add("$hash  $filename");
+            $filename = Split-Path -Path $result.Path -Leaf
+            $sums.Add("$hash  $filename")
         }
     }
     return $sums
