@@ -17,6 +17,7 @@ Table with list of ported tools:
 | Tool | Description |
 | --- | --- |
 | `md5sum` | Computes MD5 message digest |
+| `rmdir2` | Removes directories (empty and non-empty) |
 | `sha1sum` | Computes SHA1 message digest |
 | `sha256sum` | Computes SHA256 message digest |
 | `sha384sum` | Computes SHA384 message digest |
