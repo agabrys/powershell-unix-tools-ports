@@ -42,9 +42,11 @@ rmdir2 *
 
 .NOTES
 Author: Adam Gabrys
-Version: 1.0.0
+Version: 1.0.1
 
 Changelog:
+1.0.1:
+  * Stopped asking user for a deletion confirmation
 1.0.0:
   * Allowed removal of empty and non-empty directories
   * Added switches -help and -version
@@ -65,7 +67,7 @@ Param(
     }
     If ($version)
     {
-        Write-Host -Object 1.0.0
+        Write-Host -Object 1.0.1
         return
     }
 
@@ -75,8 +77,8 @@ Param(
         If ($item -is [System.IO.DirectoryInfo])
         {
             $fullName = $item.FullName
-            robocopy $emptyDir $fullName /PURGE /XD | Out-Null
-            Remove-Item -Path $fullName
+            robocopy $emptyDir $fullName /PURGE | Out-Null
+            Remove-Item -Path $fullName -Recurse -Force
             Write-Verbose -Message "`"$fullName`" has been removed"
         }
     }
