@@ -16,6 +16,7 @@ Table with list of ported tools:
 
 | Tool | Description |
 | --- | --- |
+| `base64` | Encodes/Decodes binary file |
 | `md5sum` | Computes MD5 message digest |
 | `rmdir2` | Removes directories (empty and non-empty) |
 | `sha1sum` | Computes SHA1 message digest |
